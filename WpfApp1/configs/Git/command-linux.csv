@@ -1,0 +1,4 @@
+属性名,属性中文名,属性类型,属性默认值,属性说明
+core.autocrlf,自动转换换行符,bool,false,是否在检出时将 LF 转换为 CRLF，在提交时将 CRLF 转换为 LF。
+core.filemode,权限跟踪,bool,true,是否跟踪文件权限的变化。
+core.ignorecase,忽略文件名大小写,bool,false,是否忽略文件名的大小写。

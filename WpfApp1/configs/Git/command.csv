@@ -1,0 +1,19 @@
+属性名,属性中文名,属性类型,属性默认值,属性说明
+user.name,用户名,string,,提交代码时的用户名。
+user.email,邮箱,string,,提交代码时的用户邮箱。
+core.editor,编辑器,string,,Git 使用的文本编辑器。
+core.autocrlf,自动转换换行符,bool,false,是否在检出时将 LF 转换为 CRLF，在提交时将 CRLF 转换为 LF。
+core.filemode,权限跟踪,bool,true,是否跟踪文件权限的变化。
+core.ignorecase,忽略文件名大小写,bool,false,是否忽略文件名的大小写。
+core.eol,行尾符,string,,设置行尾符类型。
+color.diff,diff 颜色输出,bool,true,是否在 diff 命令中使用颜色输出。
+color.status,status 颜色输出,bool,true,是否在 status 命令中使用颜色输出。
+color.branch,branch 颜色输出,bool,true,是否在 branch 命令中使用颜色输出。
+pull.rebase,使用 rebase,bool,false,是否在执行 git pull 时使用 rebase 而不是 merge。
+init.defaultBranch,默认分支名,string,,新仓库的默认分支名。
+http.proxy,HTTP 代理,string,,HTTP 代理服务器地址。
+https.proxy,HTTPS 代理,string,,HTTPS 代理服务器地址。
+credential.helper,凭据存储助手,string,,凭据存储助手，用于缓存用户名和密码。
+commit.template,提交信息模板,string,,提交信息的模板文件路径。
+merge.tool,合并工具,string,,合并冲突时使用的合并工具。
+diff.tool,比较工具,string,,比较工具。
