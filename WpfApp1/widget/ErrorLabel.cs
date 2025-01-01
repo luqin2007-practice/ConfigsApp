@@ -1,26 +1,54 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace Configs.widget;
 
-public class ErrorLabel : Label
+public class ErrorLabel : Label, INotifyPropertyChanged
 {
+    private static readonly DependencyProperty ErrorProperty = DependencyProperty.Register(
+        nameof(Error), typeof(Error), typeof(ErrorLabel), new PropertyMetadata(null, OnErrorChanged));
+
+    public Error? Error
+    {
+        get => (Error)GetValue(ErrorProperty); 
+        set => SetValue(ErrorProperty, value);
+    }
+
     public ErrorLabel()
     {
-        Visibility = Visibility.Hidden;
+        Visibility = Visibility.Collapsed;
         Foreground = new SolidColorBrush(Colors.Red);
     }
 
-    public void Show(string error, string? detail)
+    private static void OnErrorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        Content = detail == null ? error : $"{error}\n{detail}";
-        Visibility = Visibility.Visible;
+        var label = (ErrorLabel) d;
+        var error = label.Error;
+
+        if (error == null)
+        {
+            label.Visibility = Visibility.Collapsed;
+        }
+        else
+        {
+            label.Visibility = Visibility.Visible;
+            label.Content = $"{error.Name}{(error.Desc == null ? string.Empty : $"\n{error.Desc}")}";
+        }
     }
 
-    public void Hide()
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
-        Visibility = Visibility.Hidden;
-        Content = string.Empty;
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
+}
+
+public record Error(string Name, string? Desc)
+{
+    public static implicit operator Error(string value) => new Error(value, null);
+    public static implicit operator Error((string, string?) values) => new Error(values.Item1, values.Item2);
 }

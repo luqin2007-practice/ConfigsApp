@@ -1,0 +1,99 @@
+﻿{
+  "$schema": {
+    "hidden": true,
+    "default": "https://aka.ms/winget-settings.schema.json"
+  },
+  "visual": {
+    "progressBar": {
+      "name": "进度条样式",
+      "type": "ProgressBarType",
+      "desc": "安装应用时进度条样式"
+    },
+    "enableSixels": {
+      "name": "启用 Sixel 图像",
+      "type": "bool",
+      "desc": "在某些上下文中启用 Sixel 图像显示"
+    }
+  },
+  "installBehavior": {
+    "disableInstallNotes": {
+      "name": "显示安装说明",
+      "type": "bool",
+      "desc": "安装完成后是否显示安装说明"
+    },
+    "portablePackageUserRoot": {
+      "name": "portable 当前用户安装目录",
+      "type": "directory",
+      "desc": "portable 类型安装包，安装到当前用户时的安装目录",
+      "default": "%LOCALAPPDATA%/Microsoft/WinGet/Packages"
+    },
+    "portablePackageMachineRoot": {
+      "name": "portable 所有用户安装目录",
+      "type": "directory",
+      "desc": "portable 类型安装包，安装到所有用户时的安装目录",
+      "default": "%PROGRAMFILES%/WinGet/Packages"
+    },
+    "defaultInstallRoot": {
+      "name": "默认安装目录",
+      "type": "directory",
+      "desc": "仅当程序清单包含 InstallLocationRequired 时生效"
+    },
+    "preferences": {
+      "scope": {
+        "name": "安装范围",
+        "type": "InstallScope",
+        "desc": "默认安装到当前用户还是所有用户"
+      },
+      "locale": {
+        "name": "区域设置",
+        "type": "array",
+        "desc": "根据区域选择安装程序，使用 bcp47 语言标签"
+      },
+      "architectures": {
+        "name": "体系架构",
+        "type": "array",
+        "desc": "如 [\"x64\"]，仅能选择与当前系统兼容的架构"
+      },
+      "installerTypes": {
+        "name": "安装程序类型",
+        "type": "array",
+        "desc": "如 [\"msi\", \"msix\"]，影响选择安装程序的类型"
+      }
+    }
+  },
+  "telemetry": {
+    "disable": {
+      "name": "禁用遥测",
+      "type": "bool"
+    }
+  },
+  "logging": {
+    "level": {
+      "name": "日志等级",
+      "type": "list",
+      "split": "|",
+      "elementType": "LoggingLevel",
+      "default": "\"info\""
+    }
+  },
+  "network": {
+    "downloader": {
+      "name": "下载器",
+      "type": "Downloader"
+    },
+    "doProgressTimeoutInSeconds": {
+      "name": "超时（秒）",
+      "type": "int",
+      "default": 60,
+      "min": 1,
+      "max": 600
+    }
+  },
+  "interactivity": {
+    "disable": {
+      "name": "禁用交互式显示",
+      "type": "bool",
+      "desc": "禁用 Winget 的所有交互式提示"
+    }
+  }
+}

@@ -1,0 +1,231 @@
+﻿{
+  "app": "git",
+  "test": "{0} --version",
+  "commands": [
+    {
+      "property": "user.name",
+      "name": "用户名",
+      "type": "string",
+      "desc": "提交代码时的用户名。",
+      "override": {
+        "read": "{0} config --global --get user.name",
+        "write": "{0} config --global user.name {1}",
+        "revoke": "{0} config --global --unset user.name"
+      }
+    },
+    {
+      "property": "user.email",
+      "name": "邮箱",
+      "type": "string",
+      "desc": "提交代码时的用户邮箱。",
+      "override": {
+        "read": "{0} config --global --get user.email",
+        "write": "{0} config --global user.email {1}",
+        "revoke": "{0} config --global --unset user.email"
+      }
+    },
+    {
+      "property": "core.editor",
+      "name": "编辑器",
+      "type": "string",
+      "desc": "Git 使用的文本编辑器。",
+      "override": {
+        "read": "{0} config --global --get core.editor",
+        "write": "{0} config --global core.editor {1}",
+        "revoke": "{0} config --global --unset core.editor"
+      },
+      "default": "系统默认文本编辑器"
+    },
+    {
+      "property": "core.autocrlf",
+      "name": "自动转换换行符",
+      "type": "AutoCrlf",
+      "desc": "是否在检出时将 LF 转换为 CRLF，在提交时将 CRLF 转换为 LF。",
+      "override": {
+        "read": "{0} config --global --get core.autocrlf",
+        "write": "{0} config --global core.autocrlf {1}",
+        "revoke": "{0} config --global --unset core.autocrlf"
+      },
+      "default": {
+        "windows": "true",
+        "linux": "false",
+        "mac": "input"
+      }
+    },
+    {
+      "property": "core.filemode",
+      "name": "权限跟踪",
+      "type": "bool",
+      "desc": "是否跟踪文件权限的变化。",
+      "override": {
+        "read": "{0} config --global --get core.filemode",
+        "write": "{0} config --global core.filemode {1}",
+        "revoke": "{0} config --global --unset core.filemode"
+      },
+      "default": {
+        "windows": "false",
+        "linux": "true"
+      }
+    },
+    {
+      "property": "core.ignorecase",
+      "name": "忽略文件名大小写",
+      "type": "bool",
+      "desc": "是否忽略文件名的大小写。",
+      "override": {
+        "read": "{0} config --global --get core.ignorecase",
+        "write": "{0} config --global core.ignorecase {1}",
+        "revoke": "{0} config --global --unset core.ignorecase"
+      },
+      "default": {
+        "windows": "true",
+        "linux": "false"
+      }
+    },
+    {
+      "property": "core.eol",
+      "name": "行尾符",
+      "type": "string",
+      "desc": "设置行尾符类型。",
+      "override": {
+        "read": "{0} config --global --get core.eol",
+        "write": "{0} config --global core.eol {1}",
+        "revoke": "{0} config --global --unset core.eol"
+      },
+      "default": "native 即本地操作系统换行符"
+    },
+    {
+      "property": "color.diff",
+      "name": "diff 颜色输出",
+      "type": "bool",
+      "desc": "是否在 diff 命令中使用颜色输出。",
+      "override": {
+        "read": "{0} config --global --get color.diff",
+        "write": "{0} config --global color.diff {1}",
+        "revoke": "{0} config --global --unset color.diff"
+      },
+      "default": "true"
+    },
+    {
+      "property": "color.status",
+      "name": "status 颜色输出",
+      "type": "bool",
+      "desc": "是否在 status 命令中使用颜色输出。",
+      "override": {
+        "read": "{0} config --global --get color.status",
+        "write": "{0} config --global color.status {1}",
+        "revoke": "{0} config --global --unset color.status"
+      },
+      "default": "true"
+    },
+    {
+      "property": "color.branch",
+      "name": "branch 颜色输出",
+      "type": "bool",
+      "desc": "是否在 branch 命令中使用颜色输出。",
+      "override": {
+        "read": "{0} config --global --get color.branch",
+        "write": "{0} config --global color.branch {1}",
+        "revoke": "{0} config --global --unset color.branch"
+      },
+      "default": "true"
+    },
+    {
+      "property": "pull.rebase",
+      "name": "使用 rebase",
+      "type": "bool",
+      "desc": "是否在执行 git pull 时使用 rebase 而不是 merge。",
+      "override": {
+        "read": "{0} config --global --get pull.rebase",
+        "write": "{0} config --global pull.rebase {1}",
+        "revoke": "{0} config --global --unset pull.rebase"
+      },
+      "default": "false"
+    },
+    {
+      "property": "init.defaultBranch",
+      "name": "默认分支名",
+      "type": "string",
+      "desc": "新仓库的默认分支名。",
+      "override": {
+        "read": "{0} config --global --get init.defaultBranch",
+        "write": "{0} config --global init.defaultBranch {1}",
+        "revoke": "{0} config --global --unset init.defaultBranch"
+      },
+      "default": "main"
+    },
+    {
+      "property": "http.proxy",
+      "name": "HTTP 代理",
+      "type": "string",
+      "desc": "HTTP 代理服务器地址。",
+      "override": {
+        "read": "{0} config --global --get http.proxy",
+        "write": "{0} config --global http.proxy {1}",
+        "revoke": "{0} config --global --unset http.proxy"
+      }
+    },
+    {
+      "property": "https.proxy",
+      "name": "HTTPS 代理",
+      "type": "string",
+      "desc": "HTTPS 代理服务器地址。",
+      "override": {
+        "read": "{0} config --global --get https.proxy",
+        "write": "{0} config --global https.proxy {1}",
+        "revoke": "{0} config --global --unset https.proxy"
+      }
+    },
+    {
+      "property": "credential.helper",
+      "name": "凭据存储助手",
+      "type": "string",
+      "desc": "凭据存储助手，用于缓存用户名和密码。",
+      "override": {
+        "read": "{0} config --global --get credential.helper",
+        "write": "{0} config --global credential.helper {1}",
+        "revoke": "{0} config --global --unset credential.helper"
+      },
+      "default": {
+        "windows": "manager",
+        "linux": "store, cache 或 gnome-keyring，由系统决定",
+        "mac": "osxkeychain"
+      }
+    },
+    {
+      "property": "commit.template",
+      "name": "提交信息模板",
+      "type": "string",
+      "desc": "提交信息的模板文件路径。",
+      "override": {
+        "read": "{0} config --global --get commit.template",
+        "write": "{0} config --global commit.template {1}",
+        "revoke": "{0} config --global --unset commit.template"
+      }
+    },
+    {
+      "property": "merge.tool",
+      "name": "合并工具",
+      "type": "string",
+      "desc": "合并冲突时使用的合并工具。",
+      "override": {
+        "read": "{0} config --global --get merge.tool",
+        "write": "{0} config --global merge.tool {1}",
+        "revoke": "{0} config --global --unset merge.tool"
+      },
+      "default": "按顺序查找已知合并工具"
+    },
+    {
+      "property": "diff.tool",
+      "name": "比较工具",
+      "type": "string",
+      "desc": "比较工具。",
+      "override": {
+        "read": "{0} config --global --get diff.tool",
+        "write": "{0} config --global diff.tool {1}",
+        "revoke": "{0} config --global --unset diff.tool"
+      },
+      "default": "按顺序查找已知比较工具"
+    }
+  ]
+}

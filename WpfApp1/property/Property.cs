@@ -1,6 +1,7 @@
 using System.Text.Json.Nodes;
 using System.Windows;
 using System.Windows.Controls;
+using Configs.app;
 using Configs.util;
 
 namespace Configs.property;
@@ -11,18 +12,10 @@ namespace Configs.property;
 /// <param name="propertyName">属性名</param>
 /// <param name="title">属性显示名</param>
 /// <param name="description">属性描述</param>
-public abstract class Property(string propertyName, string title, string? description = null)
+/// <param name="valueType">属性类型</param>
+/// <param name="defaultValue">属性默认值</param>
+public abstract class Property(string propertyName, string title, string description, IType valueType, object defaultValue)
 {
-    /// <summary>
-    /// Grid 面板中表示标题的列索引
-    /// </summary>
-    public const int ColumnTitle = 0;
-
-    /// <summary>
-    /// Grid 面板中表示属性内容的列索引
-    /// </summary>
-    public const int ColumnValue = 1;
-
     /// <summary>
     /// 属性名
     /// </summary>
@@ -36,7 +29,7 @@ public abstract class Property(string propertyName, string title, string? descri
     /// <summary>
     /// 属性描述
     /// </summary>
-    public string? Description => description;
+    public string Description => description;
 
     /// <summary>
     /// 应用程序当前属性值，可能与显示的不同
@@ -45,12 +38,21 @@ public abstract class Property(string propertyName, string title, string? descri
     public abstract object Value { get; }
 
     /// <summary>
+    /// 属性类型
+    /// </summary>
+    public IType ValueType { get; } = valueType;
+
+    /// <summary>
     /// 获取当前显示的值
     /// </summary>
     public abstract object? InputValue { get; }
 
-    protected FrameworkElement NameElement = new Label();
-    protected FrameworkElement ValueElement = null!;
+    /// <summary>
+    /// 属性的默认值
+    /// </summary>
+    public object DefaultValue = defaultValue;
+
+    protected FrameworkElement Element = null!;
 
     /// <summary>
     /// 该属性是否可见
@@ -61,55 +63,23 @@ public abstract class Property(string propertyName, string title, string? descri
         set
         {
             var v = value ? Visibility.Visible : Visibility.Hidden;
-            NameElement.Visibility = v;
-            ValueElement.Visibility = v;
+            Element.Visibility = v;
             _isVisible = value;
         }
     }
 
     private bool _isVisible;
 
+    /// <summary>
+    /// 初始化视图
+    /// </summary>
     public abstract FrameworkElement CreatePropertyElement();
 
-    /// <summary>
-    /// 在 Grid 中初始化视图
-    /// </summary>
-    /// <param name="panel">视图容器</param>
-    /// <param name="row">属性所在行</param>
-    /// <see cref="ColumnTitle"/>
-    /// <see cref="ColumnValue"/>
-    public void InitializeDisplay(Grid panel, int row)
+    public void InitializeDisplay(StackPanel panel)
     {
-        // 初始化属性名
-        if (NameElement is Label nameLabel)
-        {
-            nameLabel.Content = Title;
-            if (Description != null)
-            {
-                nameLabel.ToolTip = PropertyName + '\n' + Description;
-            }
-            else
-            {
-                nameLabel.ToolTip = PropertyName;
-            }
-        }
-        // 初始化属性内容
-        ValueElement = CreatePropertyElement();
-        // 初始化视图
-        panel.Children.Add(NameElement);
-        panel.Children.Add(ValueElement);
-        Grid.SetColumn(NameElement, ColumnTitle);
-        Grid.SetRow(NameElement, row);
-        Grid.SetColumn(ValueElement, ColumnValue);
-        Grid.SetRow(ValueElement, row);
+        Element = CreatePropertyElement();
+        panel.Children.Add(Element);
     }
-
-    /// <summary>
-    /// 显示错误信息
-    /// </summary>
-    /// <param name="error">错误信息，值为空时表示清除异常信息</param>
-    /// <param name="detail">详细信息，可能为空</param>
-    public abstract void DisplayError(string? error, string? detail);
 
     /// <summary>
     /// 应用属性值，但不会更新属性显示

@@ -1,0 +1,79 @@
+﻿{
+  "ProgressBarType": [
+    {
+      "value": "accent",
+      "name": "Window Accent",
+      "desc": "Windows 主题色"
+    },
+    {
+      "value": "retro",
+      "name": "复古",
+      "desc": "使用终端色"
+    },
+    {
+      "value": "rainbow",
+      "name": "彩虹"
+    },
+    {
+      "value": "sixel",
+      "name": "Sixel 图像",
+      "desc": "使用 Sixel 图像，需要支持 Sixel 的终端，如 Windows Terminal 1.22.2362+"
+    },
+    {
+      "value": "disabled",
+      "name": "禁用",
+      "desc": "不显示进度"
+    }
+  ],
+  "InstallScope": [
+    {
+      "value": "user",
+      "name": "当前用户",
+      "desc": "默认安装到当前用户"
+    },
+    {
+      "value": "machine",
+      "name": "所有用户",
+      "desc": "默认安装到所有用户"
+    }
+  ],
+  "LoggingLevel": [
+    {
+      "value": "\"verbose\"",
+      "name": "详细信息"
+    },
+    {
+      "value": "\"info\"",
+      "name": "仅信息"
+    },
+    {
+      "value": "\"warning\"",
+      "name": "仅警告"
+    },
+    {
+      "value": "\"error\"",
+      "name": "仅错误"
+    },
+    {
+      "value": "\"critical\"",
+      "name": "仅严重错误"
+    }
+  ],
+  "Downloader": [
+    {
+      "value": "default",
+      "name": "默认",
+      "desc": "由系统决定"
+    },
+    {
+      "value": "wininet",
+      "name": "WinINet",
+      "desc": "使用 WinINet API"
+    },
+    {
+      "value": "do",
+      "name": "传递优化",
+      "desc": "使用传递优化服务"
+    }
+  ]
+}

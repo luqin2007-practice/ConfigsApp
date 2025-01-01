@@ -1,26 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UseWPF>true</UseWPF>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
 
-  <ItemGroup>
-	  <Folder Include="configs\" />
-	  <Content Include="configs\**\*">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="apps\**\*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Remove="icon.png" />
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="tutor-app.png" />
+		<EmbeddedResource Include="tutor-commands.png" />
+		<EmbeddedResource Include="tutor-file1.png" />
+		<EmbeddedResource Include="tutor-file2.png" />
+		<EmbeddedResource Include="tutor-file3.png" />
+		<EmbeddedResource Include="tutor-file4.png" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="icon.png" />
-  </ItemGroup>
-
+	<ProjectExtensions>
+		<VisualStudio>
+			<UserProperties apps_4winget_4app_1json__JsonSchema="" />
+		</VisualStudio>
+	</ProjectExtensions>
 </Project>

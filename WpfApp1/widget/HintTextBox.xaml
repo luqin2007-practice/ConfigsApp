@@ -1,0 +1,26 @@
+﻿<UserControl x:Class="Configs.widget.HintTextBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Configs.widget"
+             xmlns:converter="clr-namespace:Configs.util.converter"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <converter:EmptyToVisibilityConverter x:Key="HideWhenEmpty" />
+    </UserControl.Resources>
+
+    <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}">
+        <TextBox Name="ValueTextBox" Text="{Binding Text}" 
+                 Foreground="{Binding Foreground}" 
+                 Background="{Binding Background}"
+                 VerticalAlignment="{Binding VerticalAlignment}" />
+        <TextBlock Name="HintTextBlock" Margin="10 0 0 0"
+                   Text="{Binding Hint}" d:Text="提示信息"
+                   IsHitTestVisible="False"
+                   Foreground="{Binding HintColor}" 
+                   Background="{Binding HintBackground}" 
+                   Visibility="{Binding ValueBox.Text, Converter={StaticResource HideWhenEmpty}}"
+                   VerticalAlignment="{Binding VerticalAlignment}" />
+    </Grid>
+</UserControl>

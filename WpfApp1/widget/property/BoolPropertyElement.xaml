@@ -1,0 +1,25 @@
+﻿<local:BoolPropertyUserControl x:Class="Configs.widget.property.BoolPropertyElement"
+                               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                               xmlns:local="clr-namespace:Configs.widget.property"
+                               xmlns:widget="clr-namespace:Configs.widget"
+                               mc:Ignorable="d"
+                               d:DesignWidth="800">
+    <StackPanel Margin="5"
+                DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}">
+        <StackPanel Orientation="Horizontal">
+            <Label FontWeight="Bold" FontSize="14" VerticalAlignment="Bottom"
+                   Content="{Binding PropertyName}" d:Content="属性名" />
+            <Label VerticalAlignment="Bottom" FontSize="12" Foreground="DarkGray"
+                   Content="{Binding PropertyKey}" d:Content="property" />
+        </StackPanel>
+        <CheckBox Margin="10 5"
+                  IsChecked="{Binding PropertyValue}" d:IsChecked="True"
+                  Content="{Binding ValueStr}" d:Content="true"/>
+        <Label Margin="10 0" Foreground="SlateGray"
+               Content="{Binding Description}" d:Content="属性描述" />
+        <widget:ErrorLabel Margin="10 0" />
+    </StackPanel>
+</local:BoolPropertyUserControl>

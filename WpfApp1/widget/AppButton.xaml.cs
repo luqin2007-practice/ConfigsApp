@@ -15,9 +15,6 @@ public partial class AppButton : UserControl
     public static readonly DependencyProperty AppIconProperty = DependencyProperty.Register(
         nameof(AppIcon), typeof(ImageSource), typeof(AppButton), new PropertyMetadata(default(ImageSource)));
 
-    public static readonly RoutedEvent ClickEvent = EventManager.RegisterRoutedEvent(
-        nameof(Click), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(AppButton));
-
     /// <summary>
     /// 应用名
     /// </summary>
@@ -32,19 +29,12 @@ public partial class AppButton : UserControl
     /// </summary>
     public ImageSource? AppIcon
     {
-        get => (ImageSource)GetValue(AppIconProperty);
+        get => (ImageSource?)GetValue(AppIconProperty);
         set => SetValue(AppIconProperty, value);
-    }
-
-    public event RoutedEventHandler Click
-    {
-        add => AddHandler(ClickEvent, value);
-        remove => RemoveHandler(ClickEvent, value);
     }
 
     public AppButton()
     {
         InitializeComponent();
-        AButton.Click += (_, _) => RaiseEvent(new RoutedEventArgs(ClickEvent));
     }
 }

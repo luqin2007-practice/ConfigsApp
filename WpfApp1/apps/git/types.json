@@ -1,0 +1,10 @@
+﻿{
+  "AutoCrlf": [
+    "true",
+    "false",
+    {
+      "value": "input",
+      "desc": "不转换，由用户设置"
+    }
+  ]
+}

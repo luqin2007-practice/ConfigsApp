@@ -1,0 +1,18 @@
+﻿{
+  "visual": "显示",
+  "installBehavior": {
+    "name": "安装",
+    "children": {
+      "preferences": {
+        "name": "首选项",
+        "desc": "影响搜索和安装的选择"
+      }
+    }
+  },
+  "telemetry": {
+    "name": "遥测",
+    "desc": "控制 Winget 是否发送 ETW 事件给 Microsoft"
+  },
+  "logging": "日志",
+  "interactivity": "交互"
+}

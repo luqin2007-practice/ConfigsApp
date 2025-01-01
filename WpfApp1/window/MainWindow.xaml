@@ -1,0 +1,51 @@
+﻿<Window x:Class="Configs.window.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:widget="clr-namespace:Configs.widget"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800"
+        DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
+    <DockPanel>
+        <ListBox DockPanel.Dock="Left"
+                 ItemsSource="{Binding Apps}"
+                 SelectedItem="{Binding SelectedApp}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <widget:AppButton AppName="{Binding App.Name}"
+                                      AppIcon="{Binding AppIcon}"
+                                      Visibility="{Binding Display}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Grid DockPanel.Dock="Right" MinWidth="100" Visibility="{Binding SelectedApp.HasPresets}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <ListBox Grid.Row="0"
+                     ItemsSource="{Binding SelectedApp.Presets}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Label Content="{Binding Name}" ToolTip="{Binding Tooltip}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <Button Grid.Row="1" Name="AddPreset">添加</Button>
+            <Button Grid.Row="2" Name="RemovePreset">删除</Button>
+        </Grid>
+        <StatusBar Name="Status" DockPanel.Dock="Bottom" Visibility="Collapsed" d:Visibility="Visible">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20*" MinWidth="50" />
+                    <ColumnDefinition Width="80*" />
+                </Grid.ColumnDefinitions>
+                <ProgressBar Grid.Column="0" Name="LoadingProg" d:Maximum="10" d:Value="5"></ProgressBar>
+                <Label Grid.Column="1" Name="LoadingItem" d:Content="1/2 Git" Margin="10 0 0 0" />
+            </Grid>
+        </StatusBar>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Content="{Binding SelectedApp.MainPage}" />
+    </DockPanel>
+</Window>

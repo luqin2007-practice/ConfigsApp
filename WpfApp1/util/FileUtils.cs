@@ -1,8 +1,6 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
-using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -10,50 +8,49 @@ namespace Configs.util;
 
 public class FileUtils
 {
+    public const string AppPath = "apps";
+    public const string AppJson = "app.json";
+    public const string CommandsJson = "commands.json";
+    public const string FilesJson = "files.json";
+    public const string FilesDescExt = ".desc.json";
+    public const string FilesGroupExt = ".group.json";
+    public const string TypesJson = "types.json";
+
     public static string BuildPath(params string[] paths)
     {
-        return Path.Combine(AppDomain.CurrentDomain.BaseDirectory + paths);
+        return Path.Combine([AppDomain.CurrentDomain.BaseDirectory, ..paths]);
     }
 
     public static List<string> GetConfigList()
     {
-        var path = BuildPath("configs");
+        var path = BuildPath(AppPath);
         if (!Directory.Exists(path))
         {
             return [];
         }
-        return Directory.GetFiles(path)
-            // 仅保留包含 app.json 的文件夹
-            .Where(s => Directory.Exists(BuildPath("configs", s)))
-            .Where(s => File.Exists(BuildPath("configs", s, "app.json")))
+
+        return Directory.GetDirectories(path)
+            .Where(s => File.Exists(BuildPath(s, AppJson)))
             .ToList();
     }
 
-    public static App ReadConfig(string name)
+    public static ImageSource? LoadImageSource(string dir, string? icon)
     {
-        var path = BuildPath("configs", name + ".json");
-        if (!File.Exists(path))
-        {
-            MessageBox.Show($"{path} 配置文件不存在");
-        }
-
-        var fs = File.OpenRead(path);
-        var c = JsonSerializer.Deserialize<App>(fs);
-        fs.Close();
-        if (string.IsNullOrEmpty(c!.Name))
-        {
-            c.Name = name;
-        }
-        return c;
+        icon ??= "icon.png";
+        var path = BuildPath(dir, icon);
+        return File.Exists(path) ? new BitmapImage(new Uri(path)) : null;
     }
 
-    public static ImageSource ReadImage(string dir, string icon)
+    public static async Task<T?> ReadJson<T>(string dir, string file, JsonSerializerOptions? options = null)
     {
-        var path = BuildPath("configs", dir, icon);
+        var path = BuildPath(dir, file);
         if (!File.Exists(path))
         {
-            MessageBox.Show($"{path} 不存在");
+            return default;
         }
-        return new BitmapImage(new Uri(path));
+        
+        Debug.WriteLine($"Json：{typeof(T).FullName} {path}");
+        await using var fs = File.OpenRead(path);
+        return await JsonSerializer.DeserializeAsync<T>(fs, options);
     }
 }

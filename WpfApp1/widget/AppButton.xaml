@@ -1,32 +1,23 @@
 ﻿<UserControl x:Class="Configs.widget.AppButton"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Configs.widget"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:conv="clr-namespace:Configs.util.converter"
              mc:Ignorable="d"
-             d:DesignHeight="100" d:DesignWidth="100"
-             DataContext="{Binding RelativeSource={RelativeSource Self}}">
-    <Button Name="AButton" Height="100" Background="Transparent" BorderBrush="Transparent">
-        <StackPanel>
-            <Image Name="Icon" Source="{Binding Path=AppIcon}">
-                <Image.Style>
-                    <Style TargetType="Image">
-                        <Setter Property="Visibility" Value="Visible" />
-                        <Setter Property="Height" Value="45" />
-                        <Setter Property="Margin" Value="10" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Path=AppIcon}" Value="{x:Null}">
-                                <Setter Property="Visibility" Value="Hidden" />
-                                <Setter Property="Height" Value="0" />
-                                <Setter Property="Margin" Value="0" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Image.Style>
-            </Image>
-            <Label Name="Name" HorizontalAlignment="Center"
-                   Content="{Binding AppName}" />
-        </StackPanel>
-    </Button>
+             d:DesignHeight="100" d:DesignWidth="100">
+    <UserControl.Resources>
+        <conv:NullToVisibilityConverter x:Key="HideWhenNull" />
+        <conv:EmptyToVisibilityConverter x:Key="HideWhenEmpty" />
+    </UserControl.Resources>
+
+    <StackPanel Width="100" Height="100" Background="Transparent" 
+                DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}">
+        <Image Name="Icon" Source="{Binding Path=AppIcon}"
+               Height="45" Margin="10"
+               Visibility="{Binding AppIcon, Converter={StaticResource HideWhenNull}}" />
+        <Label Name="Name" HorizontalAlignment="Center"
+               Content="{Binding AppName}"
+               Visibility="{Binding AppName, Converter={StaticResource HideWhenEmpty}}"/>
+    </StackPanel>
 </UserControl>

@@ -1,0 +1,57 @@
+﻿<UserControl x:Class="Configs.widget.HelloPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:widget="clr-namespace:Configs.widget"
+             mc:Ignorable="d"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <StackPanel>
+        <Label HorizontalAlignment="Center" FontSize="28" Margin="20">欢迎使用集中配置工具</Label>
+        <widget:Labels Texts="{Binding Introduction[0]}" />
+        <Separator Margin="0 10" />
+        <widget:Labels Texts="{Binding Introduction[1]}" />
+        <Image Source="/tutor-app.png" Margin="10" />
+        <Separator Margin="0 0 0 10" />
+        <TabControl>
+            <TabItem Header="命令行">
+                <StackPanel>
+                    <widget:Labels Texts="{Binding Commands[0]}"/>
+                    <Image Source="/tutor-commands.png" Margin="10" />
+                    <widget:Labels Texts="{Binding Commands[1]}"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="配置文档">
+                <StackPanel>
+                    <widget:Labels Texts="{Binding Documents[0]}"/>
+                    <Image Source="/tutor-file1.png" Margin="10" />
+                    <widget:Labels Texts="{Binding Documents[1]}"/>
+                    <Image Source="/tutor-file2.png" Margin="10" />
+                    <widget:Labels Texts="{Binding Documents[2]}"/>
+                    <Image Source="/tutor-file3.png" Margin="10" />
+                    <widget:Labels Texts="{Binding Documents[3]}"/>
+                    <Image Source="/tutor-file4.png" Margin="10" />
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="数据类型">
+                <StackPanel>
+                    <widget:Labels Texts="{Binding Types[intro]}" />
+                    <Separator Margin="0 10" />
+                    <widget:Labels Texts="{Binding Types[string]}" />
+                    <Separator Margin="0 10" />
+                    <widget:Labels Texts="{Binding Types[bool]}" />
+                    <Separator Margin="0 10" />
+                    <widget:Labels Texts="{Binding Types[int]}" />
+                    <Separator Margin="0 10" />
+                    <widget:Labels Texts="{Binding Types[directory]}" />
+                    <Separator Margin="0 10" />
+                    <widget:Labels Texts="{Binding Types[file]}" />
+                    <Separator Margin="0 10" />
+                    <widget:Labels Texts="{Binding Types[list]}" />
+                    <Separator Margin="0 10" />
+                    <widget:Labels Texts="{Binding Types[enum]}" />
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </StackPanel>
+</UserControl>
