@@ -95,3 +95,7 @@ public class PropertyUserControl<T> : UserControl, INotifyPropertyChanged
 public class StringPropertyUserControl : PropertyUserControl<string>;
 
 public class BoolPropertyUserControl : PropertyUserControl<bool>;
+
+public class EnumPropertyUserControl : PropertyUserControl<EnumValue>;
+
+public class IntPropertyUserControl : PropertyUserControl<long>;

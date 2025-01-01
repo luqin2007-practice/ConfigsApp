@@ -43,14 +43,4 @@ public abstract class StringProperty(string propertyName, string title, string d
             PropertyElement.PropertyValue = jv!.GetValue<string>();
         }
     }
-
-    protected void ApplyInputValue()
-    {
-        PropertyElement.Error = null;
-        var r = ApplyValue(InputValueAsStr);
-        if (!r.IsOk)
-        {
-            PropertyElement.Error = ("属性设置失败", r.ErrorMessage);
-        }
-    }
 }

@@ -1,24 +1,19 @@
-﻿using System.Text.Json.Serialization;
+﻿namespace Configs.app;
 
-namespace Configs.app;
-
-public class CommandDetail
+public class CommandDetail(string? read = null, string? write = null, string? revoke = null)
 {
-    private string? _read, _write, _revoke;
+    private string? _read = read, _write = write, _revoke = revoke;
 
-    [JsonPropertyName("read")]
     public string Read { 
         get => _read!; 
         set => _read = value; 
     }
 
-    [JsonPropertyName("write")]
     public string Write { 
         get => _write!; 
         set => _write = value; 
     }
 
-    [JsonPropertyName("revoke")]
     public string Revoke { 
         get => _revoke!; 
         set => _revoke = value; 

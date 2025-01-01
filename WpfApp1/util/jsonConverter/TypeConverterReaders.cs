@@ -21,15 +21,24 @@ public partial class TypeConverter
         ["array"] = _readArrayType,
     };
 
-    public static IType ReadFromJsonObject(JsonNode obj, Types types)
+    public static IType? ReadType(JsonNode? obj, Types types)
     {
-        if (obj is JsonValue v)
+        switch (obj)
         {
-            return types[v.GetValue<string>()];
-        }
+            // 直接使用已有类型
+            case JsonValue:
+                return types[obj.GetValue<string>()];
 
-        var typeName = obj["type"]!.GetValue<string>();
-        return Readers[typeName](obj, types);
+            // 读取类型
+            case JsonObject:
+            {
+                var typeName = obj["type"]!.GetValue<string>();
+                return Readers[typeName](obj, types);
+            }
+
+            default:
+                return null;
+        }
     }
 
     private static StringType _readStringType(JsonNode obj, Types types)
@@ -75,30 +84,25 @@ public partial class TypeConverter
     {
         var split = obj["split"]?.GetValue<string>() ?? "\n";
         var elementObject = obj["elementType"];
-        var elementType = elementObject switch
-        {
-            null => StringType.Default,
-            JsonValue elementTypeName => types[elementTypeName.GetValue<string>()],
-            _ => ReadFromJsonObject(elementObject, types)
-        };
+        var elementType = ReadType(elementObject, types) ?? StringType.Default;
         return new ListType(split, elementType);
     }
 
     private static EnumType _readEnumType(JsonNode obj, Types types)
     {
         var values = (obj["values"] as JsonArray)!
-            .Select(value => _readEnumValue(value!, types))
+            .Select(value => _readEnumValue(value!))
             .ToList();
         return new EnumType("enum", values);
     }
 
-    private static EnumValue _readEnumValue(JsonNode v, Types types)
+    private static EnumValue _readEnumValue(JsonNode v)
     {
         switch (v)
         {
             case JsonValue:
             {
-                var value = v.GetValue<string>()!;
+                var value = v.GetValue<string>();
                 return new EnumValue(value, value, value);
             }
             case JsonObject valueObj when valueObj.ContainsKey("value"):
@@ -116,12 +120,7 @@ public partial class TypeConverter
     private static ArrayType _readArrayType(JsonNode obj, Types types)
     {
         var elementObject = obj["elementType"];
-        var elementType = elementObject switch
-        {
-            null => StringType.Default,
-            JsonValue elementTypeName => types[elementTypeName.ToJsonString()],
-            _ => ReadFromJsonObject(elementObject, types)
-        };
+        var elementType = ReadType(elementObject, types) ?? StringType.Default;
         return new ArrayType(elementType);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Configs.app;
 
-public class DefaultValue(string? windows, string? linux, string? mac)
+public class DefaultValue(string? windows = null, string? linux = null, string? mac = null)
 {
     private IType _type = StringType.Default;
     private string? _windows = windows, _linux = linux, _mac = mac;
@@ -28,6 +28,11 @@ public class DefaultValue(string? windows, string? linux, string? mac)
 
     public T GetValue<T>()
     {
+        if (typeof(T) == typeof(string))
+        {
+            return (T)(object)Value;
+        }
+
         return (T)_type.StringToValue(Value);
     }
 

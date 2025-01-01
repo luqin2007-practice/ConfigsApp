@@ -3,9 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace Configs.app;
 
-public class AppCommands
+public class AppCommands(string? app)
 {
-    private string? _app;
+    private string? _app = app;
 
     /// <summary>默认命令行</summary>
     [JsonPropertyName("app")]

@@ -7,7 +7,6 @@ using System.Text.Json;
 using System.Windows.Controls;
 using System.Windows;
 using Configs.util.jsonConverter;
-using TypeConverter = Configs.util.jsonConverter.TypeConverter;
 
 namespace Configs.window;
 
@@ -67,7 +66,12 @@ public partial class MainWindow
         var types = await FileUtils.ReadJson<Types>(dir, FileUtils.TypesJson, DefaultOptions) ?? Types.Default;
         var options = new JsonSerializerOptions(DefaultOptions);
         options.Converters.Add(new TypeConverter(types));
-        var app = new AppPageData(appInfo);
+        options.Converters.Add(new CommandConverter(types));
+        options.Converters.Add(new AppCommandsConverter(types));
+        var app = new AppPageData(appInfo)
+        {
+            AppIcon = FileUtils.LoadImageSource(dir, appInfo.Icon)
+        };
         ViewModel.Apps.Add(app);
 
         // 读 commands
@@ -76,13 +80,21 @@ public partial class MainWindow
         if (commandsJson != null)
         {
             commandsJson.Fix(appInfo);
-            _addCommandProperties(app, commandsJson);
             commandsJson.Commands.ForEach(c => c.Fix());
+            _addCommandProperties(app, commandsJson);
         }
 
         // 读 files
         LoadingMessage = $" {_loadingHead} 正在加载 {_loadingApp} - {FileUtils.FilesJson}";
-        var configsJson = await FileUtils.ReadJson<Dictionary<string, ConfigFile>>(dir, FileUtils.FilesJson, options);
+        // var configsJson = await FileUtils.ReadJson<Dictionary<string, ConfigFile>>(dir, FileUtils.FilesJson, options);
+        var configFilesPath = Path.Join(dir, FileUtils.FilesJson);
+        Dictionary<string, ConfigFile>? configsJson = null;
+        if (File.Exists(configFilesPath))
+        {
+            await using var configsJsonFile = File.OpenRead(Path.Join(dir, FileUtils.FilesJson));
+            var configsJsonStr = await JsonNode.ParseAsync(configsJsonFile);
+            configsJson = ConfigFilesConverter.ReadFromJson(configsJsonStr);
+        }
         foreach (var (name, file) in configsJson ?? [])
         {
             LoadingMessage = $" {_loadingHead} 正在加载 {_loadingApp} - {name + FileUtils.FilesDescExt}";
@@ -90,7 +102,7 @@ public partial class MainWindow
             LoadingMessage = $" {_loadingHead} 正在加载 {_loadingApp} - {name + FileUtils.FilesGroupExt}";
             var group = await FileUtils.ReadJson<JsonObject>(dir, name + FileUtils.FilesGroupExt, options);
             file.Fix(name, desc!, group, types);
-            _addFileProperty(app, file);
+            _addFileProperty(app, file, file.Root);
         }
     }
 
@@ -113,15 +125,37 @@ public partial class MainWindow
             DirectoryType => throw new NotImplementedException(),
             FileType => throw new NotImplementedException(),
             ListType => throw new NotImplementedException(),
-            EnumType => throw new NotImplementedException(),
+            EnumType => new EnumCommandProperty(app, command),
             ArrayType => throw new NotImplementedException(),
             _ => throw new NotSupportedException($"未知命令类型 {command.Property} : {command.Type.Type}")
         };
+        page.Properties.Add(property.PropertyName);
+        page.PropertyMap[property.PropertyName] = property;
         property.InitializeDisplay(page.MainPage);
     }
 
-    private void _addFileProperty(AppPageData app, ConfigFile file)
+    private void _addFileProperty(AppPageData page, ConfigFile file, ConfigGroup group)
     {
+        _addSeparator(page.MainPage);
+        foreach (var property in group.Properties)
+        {
+            Property prop = property.Type switch
+            {
+                StringType => new StringFileProperty(file, property),
+                BoolType => new BoolFileProperty(file, property),
+                IntType => new IntFileProperty(file, property),
+                DirectoryType => new StringFileProperty(file, property), // TODO
+                FileType => new StringFileProperty(file, property), // TODO
+                ListType => throw new NotImplementedException(),
+                EnumType => new EnumFileProperty(file, property),
+                ArrayType => throw new NotImplementedException(),
+                _ => throw new NotSupportedException($"未知属性类型 {property.Property} : {property.Type.Type}")
+            };
+            page.Properties.Add(prop.PropertyName);
+            page.PropertyMap[prop.PropertyName] = prop;
+            prop.InitializeDisplay(page.MainPage);
+        }
+        group.Groups.ForEach(g => _addFileProperty(page, file, g));
     }
 
     /// <summary>

@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Configs.app;
+using Configs.property;
 using Configs.util;
 using Configs.widget;
 
@@ -59,7 +60,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     }
 }
 
-public class AppPageData(AppInformation app)
+public class AppPageData(AppInformation app) : INotifyPropertyChanged
 {
     public AppInformation App { get; set; } = app;
 
@@ -71,7 +72,13 @@ public class AppPageData(AppInformation app)
 
     public ImageSource? AppIcon { get; set; }
 
-    public List<Preset> Presets { get; set; } = [];
+    public ObservableCollection<Preset> Presets { get; set; } = [];
+
+    public Dictionary<string, Preset> PresetMap = [];
+
+    public ObservableCollection<string> Properties = [];
+
+    public Dictionary<string, Property> PropertyMap = [];
 
     public static AppPageData CreateHelloPage()
     {
@@ -85,5 +92,12 @@ public class AppPageData(AppInformation app)
         data.MainPage.Children.Add(page);
         data.Display = Visibility.Collapsed;
         return data;
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

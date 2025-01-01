@@ -97,6 +97,7 @@ public static class JsonUtils
                     array.Add(arr!);
                     break;
                 case JsonTokenType.EndArray:
+                    reader.Read();
                     return true;
                 case JsonTokenType.PropertyName:
                     throw new JsonException("未知的 Json 属性标识符");

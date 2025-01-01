@@ -62,14 +62,15 @@ public partial record ConfigFile
         // 属性描述
         var descStr = desc["desc"]?.GetValue<string>() ?? name;
         // 属性类型
-        var type = desc.TryGetPropertyValue("type", out var n) ? TypeConverter.ReadFromJsonObject(n!, types) : StringType.Default;
+        desc.TryGetPropertyValue("type", out var n);
+        var type = TypeConverter.ReadType(n, types) ?? StringType.Default;
         // 属性默认值
-        var defaultValue = DefaultValueConverter.ReadFromJson(desc["default"]) ?? new DefaultValue(null, null, null);
+        var defaultValue = DefaultValueConverter.ReadFromJson(desc["default"]) ?? new DefaultValue();
         defaultValue.Fix(type);
         // 是否隐藏
         var hidden = desc["hidden"]?.GetValue<bool>() ?? false;
         
-        parent.Properties.Add(new ConfigProperty(property, name, descStr, type, defaultValue, hidden));
+        parent.Properties.Add(new ConfigProperty(property, name, descStr, type, defaultValue, hidden, parent));
     }
 
     private void _addGroup(string groupName, JsonObject desc, JsonNode? group, ConfigGroup parent, Types types)
@@ -80,14 +81,14 @@ public partial record ConfigFile
         {
             // 没有 group 数据，使用默认值
             case null:
-                g = new ConfigGroup(groupName, groupName, groupName, [], []);
+                g = new ConfigGroup(groupName, groupName, groupName, [], [], parent);
                 break;
 
             // group 数据为字符串，使用字符串作为组名
             case JsonValue gv:
             {
                 var gName = gv.GetValue<string>();
-                g = new ConfigGroup(groupName, gName, groupName, [], []);
+                g = new ConfigGroup(groupName, gName, groupName, [], [], parent);
                 break;
             }
 
@@ -99,7 +100,7 @@ public partial record ConfigFile
                 // group 描述
                 var gDesc = group["desc"]?.GetValue<string>() ?? gName;
                 
-                g = new ConfigGroup(groupName, gName, gDesc, [], []);
+                g = new ConfigGroup(groupName, gName, gDesc, [], [], parent);
                 children = group["children"]?.AsObject();
                 break;
             }

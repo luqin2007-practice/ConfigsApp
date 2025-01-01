@@ -43,6 +43,21 @@
         "name": "安装范围",
         "type": "InstallScope",
         "desc": "默认安装到当前用户还是所有用户"
+      },
+      "locale": {
+        "name": "区域设置",
+        "type": "array",
+        "desc": "根据区域选择安装程序，使用 bcp47 语言标签"
+      },
+      "architectures": {
+        "name": "体系架构",
+        "type": "array",
+        "desc": "如 [\"x64\"]，仅能选择与当前系统兼容的架构"
+      },
+      "installerTypes": {
+        "name": "安装程序类型",
+        "type": "array",
+        "desc": "如 [\"msi\", \"msix\"]，影响选择安装程序的类型"
       }
     }
   },
@@ -55,7 +70,9 @@
   "logging": {
     "level": {
       "name": "日志等级",
-      "type": "LoggingLevel",
+      "type": "list",
+      "split": "|",
+      "elementType": "LoggingLevel",
       "default": "\"info\""
     }
   },

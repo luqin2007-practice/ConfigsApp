@@ -25,9 +25,10 @@ public class DefaultValueConverter : JsonConverter<DefaultValue>
         {
             case JsonValue s:
             {
-                var defValue = s.GetValue<string>();
+                var defValue = s.ToString();
                 return new DefaultValue(defValue, defValue, defValue);
             }
+
             case JsonObject obj:
             {
                 var windows = obj["windows"]?.ToString();
@@ -35,6 +36,7 @@ public class DefaultValueConverter : JsonConverter<DefaultValue>
                 var mac = obj["mac"]?.ToString();
                 return new DefaultValue(windows, linux, mac);
             }
+            
             default:
                 return null;
         }

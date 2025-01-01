@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -7,7 +9,7 @@ namespace Configs.widget;
 /// <summary>
 /// AppButton.xaml 的交互逻辑
 /// </summary>
-public partial class AppButton : UserControl
+public partial class AppButton : UserControl, INotifyPropertyChanged
 {
     public static readonly DependencyProperty AppNameProperty = DependencyProperty.Register(
         nameof(AppName), typeof(string), typeof(AppButton), new PropertyMetadata(default(string)));
@@ -36,5 +38,12 @@ public partial class AppButton : UserControl
     public AppButton()
     {
         InitializeComponent();
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

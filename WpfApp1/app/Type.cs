@@ -88,8 +88,8 @@ public record BoolType(string True = "true", string False = "false") : IType
 /// <param name="Max">最大值，默认不做限制</param>
 public record IntType(long? Min = null, long? Max = null) : IType
 {
-    public static readonly IntType Default = new IntType();
-    public string DefaultValue => (Min ?? 0).ToString();
+    public static readonly IntType Default = new();
+    public string DefaultValue => (Min ?? 0L).ToString();
 
     public string Type => "int";
 
@@ -98,7 +98,7 @@ public record IntType(long? Min = null, long? Max = null) : IType
 
     public string ValueToString(object value) => value.ToString()!;
 
-    public object StringToValue(string value) => int.Parse(value);
+    public object StringToValue(string value) => long.Parse(value);
 }
 
 /// <summary>
@@ -175,7 +175,7 @@ public record ListType(string Split, IType ElementType) : IType
             from object? o in (IEnumerable)value select (ElementType ?? StringType.Default).ValueToString(o));
 
     public object StringToValue(string value) => value.Split(Split)
-            .Select(s => (ElementType ?? StringType.Default).StringToValue(s))
+            .Select(s => ElementType.StringToValue(s))
             .ToList();
 }
 
@@ -198,7 +198,7 @@ public record EnumType(string Type, List<EnumValue> Values) : IType
 
     public string ValueToString(object value) => ((EnumValue)value).Value;
 
-    public object StringToValue(string value) => _dictionary[value];
+    public object StringToValue(string value) => _dictionary.TryGetValue(value, out var v) ? v : Values[0];
 }
 
 public record EnumValue(string Value, string Name, string Desc);
