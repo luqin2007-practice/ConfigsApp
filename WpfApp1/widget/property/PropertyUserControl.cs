@@ -72,9 +72,11 @@ public class PropertyUserControl<T> : UserControl, INotifyPropertyChanged
         set => SetValue(ErrorProperty, value);
     }
 
-    public string ValueStr => ValueType.ValueToString(PropertyValue ?? Default!);
+    public string ValueStr => ValueType.ValueToString(PropertyValue!);
 
     public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected Property Property = null!;
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
@@ -83,6 +85,8 @@ public class PropertyUserControl<T> : UserControl, INotifyPropertyChanged
 
     public void Initialize(Property property, T value, T defaultValue)
     {
+        Property = property;
+
         PropertyName = property.PropertyName;
         PropertyKey = property.Title;
         Description = property.Description;

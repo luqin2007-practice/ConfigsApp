@@ -21,7 +21,7 @@
             <Label VerticalAlignment="Bottom" FontSize="12" Foreground="DarkGray"
                    Content="{Binding PropertyKey}" d:Content="property" />
         </StackPanel>
-        <ComboBox Margin="10 5" DisplayMemberPath="Name"
+        <ComboBox Margin="10 5" DisplayMemberPath="Name" SelectionChanged="Selector_OnSelectionChanged"
                   ItemsSource="{Binding ValueType, Converter={StaticResource EnumTypeValues}}"
                   SelectedValue="{Binding PropertyValue}">
             <ComboBox.ItemContainerStyle>

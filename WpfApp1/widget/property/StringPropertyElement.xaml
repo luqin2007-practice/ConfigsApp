@@ -15,8 +15,8 @@
             <Label VerticalAlignment="Bottom" FontSize="12" Foreground="DarkGray"
                    Content="{Binding PropertyKey}" d:Content="property" />
         </StackPanel>
-        <widget:HintTextBox Margin="10 5"
-                 Text="{Binding PropertyValue}" d:Text="属性值" />
+        <widget:HintTextBox Margin="10 5" LostFocus="UIElement_OnLostFocus"
+                            Text="{Binding PropertyValue, Mode=TwoWay}" d:Text="属性值"/>
         <Label Margin="10 0" Foreground="SlateGray"
                Content="{Binding Description}" d:Content="属性描述" />
         <widget:ErrorLabel Margin="10 0" />

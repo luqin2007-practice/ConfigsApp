@@ -15,7 +15,7 @@
             <Label VerticalAlignment="Bottom" FontSize="12" Foreground="DarkGray"
                    Content="{Binding PropertyKey}" d:Content="property" />
         </StackPanel>
-        <CheckBox Margin="10 5"
+        <CheckBox Margin="10 5" Checked="ToggleButton_OnChecked"
                   IsChecked="{Binding PropertyValue}" d:IsChecked="True"
                   Content="{Binding ValueStr}" d:Content="true"/>
         <Label Margin="10 0" Foreground="SlateGray"

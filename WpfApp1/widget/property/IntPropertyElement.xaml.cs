@@ -1,4 +1,9 @@
-﻿namespace Configs.widget.property
+﻿using System.Windows;
+using System.Windows.Controls;
+using Configs.property;
+using Configs.util;
+
+namespace Configs.widget.property
 {
     /// <summary>
     /// IntPropertyElement.xaml 的交互逻辑
@@ -8,6 +13,11 @@
         public IntPropertyElement()
         {
             InitializeComponent();
+        }
+
+        private void UIElement_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            Error = Property.ApplyValue(PropertyValue).ToError("设置失败");
         }
     }
 }

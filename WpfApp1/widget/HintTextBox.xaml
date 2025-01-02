@@ -7,20 +7,23 @@
              xmlns:converter="clr-namespace:Configs.util.converter"
              mc:Ignorable="d">
     <UserControl.Resources>
-        <converter:EmptyToVisibilityConverter x:Key="HideWhenEmpty" />
+        <converter:EmptyToVisibilityConverter x:Key="ShowWhenEmpty" />
     </UserControl.Resources>
 
     <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}">
-        <TextBox Name="ValueTextBox" Text="{Binding Text}" 
+        <TextBox Name="ValueTextBox" 
+                 LostFocus="ValueTextBox_OnLostFocus"
+                 TextChanged="ValueTextBox_OnTextChanged"
+                 Text="{Binding Text, Mode=TwoWay}"
                  Foreground="{Binding Foreground}" 
                  Background="{Binding Background}"
                  VerticalAlignment="{Binding VerticalAlignment}" />
         <TextBlock Name="HintTextBlock" Margin="10 0 0 0"
                    Text="{Binding Hint}" d:Text="提示信息"
                    IsHitTestVisible="False"
-                   Foreground="{Binding HintColor}" 
+                   Foreground="{Binding HintColor}" d:Foreground="Gray"
                    Background="{Binding HintBackground}" 
-                   Visibility="{Binding ValueBox.Text, Converter={StaticResource HideWhenEmpty}}"
+                   Visibility="{Binding Text, Converter={StaticResource ShowWhenEmpty}}"
                    VerticalAlignment="{Binding VerticalAlignment}" />
     </Grid>
 </UserControl>
