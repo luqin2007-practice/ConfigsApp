@@ -23,6 +23,10 @@
 		<EmbeddedResource Include="tutor-file4.png" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <PackageReference Include="System.Data.SQLite" Version="1.0.119" />
+	</ItemGroup>
+
 	<ProjectExtensions>
 		<VisualStudio>
 			<UserProperties apps_4winget_4app_1json__JsonSchema="" />

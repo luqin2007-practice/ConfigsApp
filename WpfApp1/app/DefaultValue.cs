@@ -11,27 +11,17 @@ public class DefaultValue(string? windows = null, string? linux = null, string? 
     {
         get
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                return _windows!;
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                return _linux!;
-            }
-            else
-            {
-                return _mac!;
-            }
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) return _windows!;
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) return _linux!;
+
+            return _mac!;
         }
     }
 
     public T GetValue<T>()
     {
-        if (typeof(T) == typeof(string))
-        {
-            return (T)(object)Value;
-        }
+        if (typeof(T) == typeof(string)) return (T)(object)Value;
 
         return (T)_type.StringToValue(Value);
     }

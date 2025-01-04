@@ -1,14 +1,17 @@
 ﻿namespace Configs.app;
 
-public partial record ConfigFile(string Type, List<string> Paths)
+public partial class ConfigFile(string type, List<string> paths)
 {
-    public string SelectedPath { get; set; } = Environment.ExpandEnvironmentVariables(Paths[0]);
+    public string SelectedPath { get; set; } = Environment.ExpandEnvironmentVariables(paths[0]);
 
     public string Name { get; set; } = "Unknown";
 
     public ConfigGroup Root { get; set; } = new("Root", "Root", "Root", [], [], null);
 
-    private List<string> queryPath(ConfigProperty property)
+    public string Type { get; init; } = type;
+    public List<string> Paths { get; init; } = paths;
+
+    private List<string> _queryPath(ConfigProperty property)
     {
         List<string> path = [];
         // 查询路径
@@ -21,13 +24,30 @@ public partial record ConfigFile(string Type, List<string> Paths)
 
         return path;
     }
-};
+}
 
 public interface IConfigElement
 {
     ConfigGroup? Parent { get; }
 }
 
-public record ConfigGroup(string Group, string Name, string Desc, List<ConfigProperty> Properties, List<ConfigGroup> Groups, ConfigGroup? Parent) : IConfigElement;
+public class ConfigGroup(string group, string name, string desc, List<ConfigProperty> properties, List<ConfigGroup> groups, ConfigGroup? parent) : IConfigElement
+{
+    public string Group { get; init; } = group;
+    public string Name { get; init; } = name;
+    public string Desc { get; init; } = desc;
+    public List<ConfigProperty> Properties { get; init; } = properties;
+    public List<ConfigGroup> Groups { get; init; } = groups;
+    public ConfigGroup? Parent { get; init; } = parent;
+}
 
-public record ConfigProperty(string Property, string Name, string Desc, IType Type, DefaultValue Default, bool Hidden, ConfigGroup? Parent) : IConfigElement;
+public class ConfigProperty(string property, string name, string desc, IType type, DefaultValue @default, bool hidden, ConfigGroup? parent) : IConfigElement
+{
+    public string Property { get; init; } = property;
+    public string Name { get; init; } = name;
+    public string Desc { get; init; } = desc;
+    public IType Type { get; init; } = type;
+    public DefaultValue Default { get; init; } = @default;
+    public bool Hidden { get; init; } = hidden;
+    public ConfigGroup? Parent { get; init; } = parent;
+}

@@ -1,19 +1,20 @@
-﻿using System.Globalization;
+﻿using Configs.app;
+using System.Globalization;
 using System.Windows.Data;
-using Configs.app;
 
-namespace Configs.util.converter;
-
-[ValueConversion(typeof(EnumType), typeof(List<EnumValue>))]
-public class EnumTypeToValuesConverter() : IValueConverter
+namespace Configs.util.converter
 {
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    [ValueConversion(typeof(EnumType), typeof(List<EnumValue>))]
+    public class EnumTypeToValuesConverter : IValueConverter
     {
-        return value is EnumType et ? et.Values : [];
-    }
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            return value is EnumType et ? et.Values : [];
+        }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        throw new NotImplementedException();
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

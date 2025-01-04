@@ -4,19 +4,22 @@ public class CommandDetail(string? read = null, string? write = null, string? re
 {
     private string? _read = read, _write = write, _revoke = revoke;
 
-    public string Read { 
-        get => _read!; 
-        set => _read = value; 
+    public string Read
+    {
+        get => _read!;
+        set => _read = value;
     }
 
-    public string Write { 
-        get => _write!; 
-        set => _write = value; 
+    public string Write
+    {
+        get => _write!;
+        set => _write = value;
     }
 
-    public string Revoke { 
-        get => _revoke!; 
-        set => _revoke = value; 
+    public string Revoke
+    {
+        get => _revoke!;
+        set => _revoke = value;
     }
 
     public void Fix(DefaultValue defValue, string property)

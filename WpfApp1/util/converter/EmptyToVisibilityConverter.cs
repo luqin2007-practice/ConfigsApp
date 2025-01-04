@@ -2,17 +2,18 @@
 using System.Windows;
 using System.Windows.Data;
 
-namespace Configs.util.converter;
-
-public class EmptyToVisibilityConverter : IValueConverter
+namespace Configs.util.converter
 {
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public class EmptyToVisibilityConverter : IValueConverter
     {
-        return string.IsNullOrEmpty(value as string) ? Visibility.Collapsed : Visibility.Visible;
-    }
+        public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            return string.IsNullOrEmpty(value as string) ? Visibility.Collapsed : Visibility.Visible;
+        }
 
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        throw new NotImplementedException();
+        public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

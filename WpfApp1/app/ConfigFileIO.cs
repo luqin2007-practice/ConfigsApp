@@ -5,26 +5,23 @@ using Configs.util;
 
 namespace Configs.app;
 
-public partial record ConfigFile
+public partial class ConfigFile
 {
-    private static readonly JsonDocumentOptions _options = new JsonDocumentOptions()
+    private static readonly JsonDocumentOptions Options = new()
     {
         CommentHandling = JsonCommentHandling.Skip,
-        AllowTrailingCommas = true,
+        AllowTrailingCommas = true
     };
 
     private object? _file;
 
     public object Read()
     {
-        if (_file != null)
-        {
-            return _file;
-        }
+        if (_file != null) return _file;
 
         _file = Type.ToLower() switch
         {
-            "json" => JsonNode.Parse(File.ReadAllText(SelectedPath), documentOptions: _options)!,
+            "json" => JsonNode.Parse(File.ReadAllText(SelectedPath), documentOptions: Options)!,
             _ => throw new NotSupportedException()
         };
         return _file;
@@ -32,10 +29,7 @@ public partial record ConfigFile
 
     public ExeResult Save()
     {
-        if (_file == null)
-        {
-            return ExeResult.Ok();
-        }
+        if (_file == null) return ExeResult.Ok();
 
         switch (Type.ToLower())
         {

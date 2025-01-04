@@ -1,30 +1,31 @@
-﻿using System.Text.Json;
+﻿using Configs.app;
+using System.Text.Json;
 using System.Text.Json.Serialization;
-using Configs.app;
 
-namespace Configs.util.jsonConverter;
-
-public partial class TypeConverter(Types types) : JsonConverter<IType>
+namespace Configs.util.jsonConverter
 {
-    public Types Types { get; } = types;
-
-    public override IType? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public partial class TypeConverter(Types types) : JsonConverter<IType>
     {
-        if (JsonUtils.TryReadString(ref reader, out var typeName))
+        public Types Types { get; } = types;
+
+        public override IType? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            return Types[typeName];
+            if (JsonUtils.TryReadString(ref reader, out var typeName))
+            {
+                return Types[typeName];
+            }
+
+            if (JsonUtils.TryReadObject(ref reader, out var typeObject) && typeObject.ContainsKey("type"))
+            {
+                return ReadType(typeObject, Types);
+            }
+
+            return null;
         }
 
-        if (JsonUtils.TryReadObject(ref reader, out var typeObject) && typeObject.ContainsKey("type"))
+        public override void Write(Utf8JsonWriter writer, IType value, JsonSerializerOptions options)
         {
-            return ReadType(typeObject, Types);
+            throw new NotImplementedException();
         }
-
-        return null;
-    }
-
-    public override void Write(Utf8JsonWriter writer, IType value, JsonSerializerOptions options)
-    {
-        throw new NotImplementedException();
     }
 }

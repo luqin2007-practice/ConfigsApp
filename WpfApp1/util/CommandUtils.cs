@@ -1,5 +1,5 @@
-﻿using System.Diagnostics;
-using Configs.widget;
+﻿using Configs.widget;
+using System.Diagnostics;
 
 namespace Configs.util;
 

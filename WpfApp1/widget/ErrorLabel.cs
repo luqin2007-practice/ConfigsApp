@@ -3,52 +3,56 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using static System.Windows.DependencyProperty;
 
-namespace Configs.widget;
-
-public class ErrorLabel : Label, INotifyPropertyChanged
+namespace Configs.widget
 {
-    private static readonly DependencyProperty ErrorProperty = DependencyProperty.Register(
-        nameof(Error), typeof(Error), typeof(ErrorLabel), new PropertyMetadata(null, OnErrorChanged));
-
-    public Error? Error
+    public class ErrorLabel : Label, INotifyPropertyChanged
     {
-        get => (Error)GetValue(ErrorProperty); 
-        set => SetValue(ErrorProperty, value);
-    }
+        private static readonly DependencyProperty ErrorProperty = 
+            Register(nameof(Error), typeof(Error), typeof(ErrorLabel), new PropertyMetadata(null, OnErrorChanged));
 
-    public ErrorLabel()
-    {
-        Visibility = Visibility.Collapsed;
-        Foreground = new SolidColorBrush(Colors.Red);
-    }
-
-    private static void OnErrorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        var label = (ErrorLabel) d;
-        var error = label.Error;
-
-        if (error == null)
+        public Error? Error
         {
-            label.Visibility = Visibility.Collapsed;
+            get => (Error)GetValue(ErrorProperty);
+            set => SetValue(ErrorProperty, value);
         }
-        else
+
+        public ErrorLabel()
         {
-            label.Visibility = Visibility.Visible;
-            label.Content = $"{error.Name}{(error.Desc == null ? string.Empty : $"\n{error.Desc}")}";
+            Visibility = Visibility.Collapsed;
+            Foreground = new SolidColorBrush(Colors.Red);
+        }
+
+        private static void OnErrorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var label = (ErrorLabel)d;
+            var error = label.Error;
+
+            if (error == null)
+            {
+                label.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                label.Visibility = Visibility.Visible;
+                label.Content = $"{error.Name}{(error.Desc == null ? string.Empty : $"\n{error.Desc}")}";
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    public class Error(string name, string? desc)
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        public static implicit operator Error(string value) => new Error(value, null);
+        public static implicit operator Error((string, string?) values) => new Error(values.Item1, values.Item2);
+        public string Name { get; init; } = name;
+        public string? Desc { get; init; } = desc;
     }
-}
-
-public record Error(string Name, string? Desc)
-{
-    public static implicit operator Error(string value) => new Error(value, null);
-    public static implicit operator Error((string, string?) values) => new Error(values.Item1, values.Item2);
 }

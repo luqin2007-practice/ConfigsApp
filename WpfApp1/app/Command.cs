@@ -3,22 +3,22 @@
 namespace Configs.app;
 
 /// <summary>
-/// 属性命令
+///     属性命令
 /// </summary>
 public class Command
 {
-    private string? _name, _desc;
     private CommandDetail? _command;
     private DefaultValue? _default;
+    private string? _name, _desc;
 
     /// <summary>
-    /// 属性名
+    ///     属性名
     /// </summary>
     [JsonPropertyName("property")]
-    public required string Property { get; set; }
+    public string Property { get; set; } = "";
 
     /// <summary>
-    /// 属性名（显示）
+    ///     属性名（显示）
     /// </summary>
     [JsonPropertyName("name")]
     public string Name
@@ -28,7 +28,7 @@ public class Command
     }
 
     /// <summary>
-    /// 属性描述
+    ///     属性描述
     /// </summary>
     [JsonPropertyName("desc")]
     public string Desc
@@ -38,28 +38,28 @@ public class Command
     }
 
     /// <summary>
-    /// 属性类型
+    ///     属性类型
     /// </summary>
     [JsonPropertyName("type")]
     public IType Type { get; set; } = StringType.Default;
 
     /// <summary>
-    /// 命令集合
+    ///     命令集合
     /// </summary>
     [JsonPropertyName("override")]
     public CommandDetail Commands
     {
-        get => _command!; 
+        get => _command!;
         set => _command = value;
     }
 
     /// <summary>
-    /// 默认值
+    ///     默认值
     /// </summary>
     [JsonPropertyName("default")]
     public DefaultValue Default
     {
-        get => _default!; 
+        get => _default!;
         set => _default = value;
     }
 

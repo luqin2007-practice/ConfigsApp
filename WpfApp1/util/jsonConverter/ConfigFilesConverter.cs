@@ -1,23 +1,24 @@
-﻿using System.Text.Json.Nodes;
-using Configs.app;
+﻿using Configs.app;
+using System.Text.Json.Nodes;
 
-namespace Configs.util.jsonConverter;
-
-public class ConfigFilesConverter
+namespace Configs.util.jsonConverter
 {
-    public static Dictionary<string, ConfigFile>? ReadFromJson(JsonNode? n)
+    public class ConfigFilesConverter
     {
-
-        if (n is not JsonObject obj)
+        public static Dictionary<string, ConfigFile>? ReadFromJson(JsonNode? n)
         {
-            return null;
-        }
 
-        Dictionary<string, ConfigFile> files = new();
-        foreach (var (name, node) in obj)
-        {
-            files[name] = ConfigFileConverter.ReadFromJson(node)!;
+            if (n is not JsonObject obj)
+            {
+                return null;
+            }
+
+            Dictionary<string, ConfigFile> files = new();
+            foreach (var (name, node) in obj)
+            {
+                files[name] = ConfigFileConverter.ReadFromJson(node)!;
+            }
+            return files;
         }
-        return files;
     }
 }

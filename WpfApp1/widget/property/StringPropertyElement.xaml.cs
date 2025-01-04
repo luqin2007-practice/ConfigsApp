@@ -1,21 +1,22 @@
-﻿using System.Windows;
-using Configs.util;
+﻿using Configs.util;
+using System.Windows;
 
-namespace Configs.widget.property;
-
-/// <summary>
-/// StringProperty.xaml 的交互逻辑
-/// </summary>
-public partial class StringPropertyElement : StringPropertyUserControl
+namespace Configs.widget.property
 {
-    public StringPropertyElement()
+    /// <summary>
+    /// StringProperty.xaml 的交互逻辑
+    /// </summary>
+    public partial class StringPropertyElement : StringPropertyUserControl
     {
-        InitializeComponent();
-    }
+        public StringPropertyElement()
+        {
+            InitializeComponent();
+        }
 
-    private void UIElement_OnLostFocus(object sender, RoutedEventArgs e)
-    {
-        var value = (sender as HintTextBox)!.ValueTextBox.Text;
-        Error = Property.ApplyValue(value).ToError("设置失败");
+        private void UIElement_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            var value = (sender as HintTextBox)!.ValueTextBox.Text;
+            Error = Property.ApplyValue(value).ToError("设置失败");
+        }
     }
 }

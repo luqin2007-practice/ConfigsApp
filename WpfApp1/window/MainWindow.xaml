@@ -25,7 +25,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <ListBox Grid.Row="0" Name="PresetListBox"
+            <ListBox Grid.Row="0" Name="PresetListBox" MouseDoubleClick="PresetListBox_OnMouseDoubleClick"
                      ItemsSource="{Binding SelectedApp.Presets}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>

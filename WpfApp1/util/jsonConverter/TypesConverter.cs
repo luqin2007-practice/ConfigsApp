@@ -1,68 +1,69 @@
-﻿using System.Text.Json;
+﻿using Configs.app;
+using System.Text.Json;
 using System.Text.Json.Serialization;
-using Configs.app;
 
-namespace Configs.util.jsonConverter;
-
-/*
- * {
- *   <TypeName>: [ <EnumType>... ]
- * }
- */
-public class TypesConverter : JsonConverter<Types>
+namespace Configs.util.jsonConverter
 {
-    public static readonly TypesConverter Instance = new TypesConverter();
-
-    public override Types? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    /*
+     * {
+     *   <TypeName>: [ <EnumType>... ]
+     * }
+     */
+    public class TypesConverter : JsonConverter<Types>
     {
-        if (reader.TokenType != JsonTokenType.StartObject)
+        public static readonly TypesConverter Instance = new TypesConverter();
+
+        public override Types? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            return null;
-        }
+            if (reader.TokenType != JsonTokenType.StartObject)
+            {
+                return null;
+            }
 
-        // Object Start
-        reader.Read();
-
-        var types = new Types();
-        while (reader.TokenType == JsonTokenType.PropertyName)
-        {
-            JsonUtils.TryReadString(ref reader, out var typeName);
-
-            // Array Start
+            // Object Start
             reader.Read();
 
-            List<EnumValue> typeValues = [];
-            while (reader.TokenType != JsonTokenType.EndArray)
+            var types = new Types();
+            while (reader.TokenType == JsonTokenType.PropertyName)
             {
-                typeValues.Add(EnumValueConverter.Instance.Read(ref reader, typeof(EnumValue), options)!);
-            }
-            types.Add(new EnumType(typeName!, typeValues));
+                JsonUtils.TryReadString(ref reader, out var typeName);
 
-            // Array End
-            reader.Read();
+                // Array Start
+                reader.Read();
+
+                List<EnumValue> typeValues = [];
+                while (reader.TokenType != JsonTokenType.EndArray)
+                {
+                    typeValues.Add(EnumValueConverter.Instance.Read(ref reader, typeof(EnumValue), options)!);
+                }
+                types.Add(new EnumType(typeName!, typeValues));
+
+                // Array End
+                reader.Read();
+            }
+
+            return types;
         }
 
-        return types;
-    }
-
-    public override void Write(Utf8JsonWriter writer, Types types, JsonSerializerOptions options)
-    {
-        writer.WriteStartObject();
-        foreach (var type in types)
+        public override void Write(Utf8JsonWriter writer, Types types, JsonSerializerOptions options)
         {
-            if (type is not EnumType et)
+            writer.WriteStartObject();
+            foreach (var type in types)
             {
-                throw new JsonException($"无法序列化类型 {type.Type}");
-            }
+                if (type is not EnumType et)
+                {
+                    throw new JsonException($"无法序列化类型 {type.Type}");
+                }
 
-            writer.WritePropertyName(type.Type);
-            writer.WriteStartArray();
-            foreach (var value in et.Values)
-            {
-                EnumValueConverter.Instance.Write(writer, value, options);
+                writer.WritePropertyName(type.Type);
+                writer.WriteStartArray();
+                foreach (var value in et.Values)
+                {
+                    EnumValueConverter.Instance.Write(writer, value, options);
+                }
+                writer.WriteEndArray();
             }
-            writer.WriteEndArray();
+            writer.WriteEndObject();
         }
-        writer.WriteEndObject();
     }
 }

@@ -10,7 +10,7 @@ namespace Configs.window
     public partial class AddPresets : Window, INotifyPropertyChanged
     {
         public List<string> Properties { get; set; } = [];
-        private MainWindow _parent;
+        private readonly MainWindow _parent;
 
         public AddPresets(MainWindow parent)
         {

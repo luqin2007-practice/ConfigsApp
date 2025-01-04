@@ -18,26 +18,14 @@ public class Types : IEnumerable<IType>
         ["directory"] = DirectoryType.Default,
         ["file"] = FileType.Default,
         ["list"] = ListType.Default,
-        ["array"] = ArrayType.Default,
+        ["array"] = ArrayType.Default
     };
-
-    private readonly Dictionary<string, IType> _types = [];
     private readonly List<IType> _typeList = [];
 
-    public void Add(EnumType type)
-    {
-        _typeList.Add(type);
-        _types[type.Type] = type;
-    }
+    private readonly Dictionary<string, IType> _types = new();
 
-    public bool ContainsKey(string type)
+    static Types()
     {
-        return _types.ContainsKey(type) || DefaultTypes.ContainsKey(type);
-    }
-
-    public bool TryGetValue(string type, [MaybeNullWhen(false)] out IType value)
-    {
-        return _types.TryGetValue(type, out value) || DefaultTypes.TryGetValue(type, out value);
     }
 
     public IType this[string key]
@@ -58,5 +46,21 @@ public class Types : IEnumerable<IType>
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
+    }
+
+    public void Add(EnumType type)
+    {
+        _typeList.Add(type);
+        _types[type.Type] = type;
+    }
+
+    public bool ContainsKey(string type)
+    {
+        return _types.ContainsKey(type) || DefaultTypes.ContainsKey(type);
+    }
+
+    public bool TryGetValue(string type, [MaybeNullWhen(false)] out IType value)
+    {
+        return _types.TryGetValue(type, out value) || DefaultTypes.TryGetValue(type, out value);
     }
 }

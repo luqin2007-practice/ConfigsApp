@@ -5,7 +5,7 @@ using TypeConverter = Configs.util.jsonConverter.TypeConverter;
 
 namespace Configs.app;
 
-public partial record ConfigFile
+public partial class ConfigFile
 {
     public void Fix(string name, JsonObject desc, JsonObject? group, Types types)
     {
@@ -21,35 +21,22 @@ public partial record ConfigFile
     private void _addGroupOrProperty(string property, JsonObject desc, JsonNode? group, ConfigGroup parent, Types types)
     {
         if (_isProperty(desc, group))
-        {
             _addProperty(property, desc, parent, types);
-        }
         else
-        {
             _addGroup(property, desc, group, parent, types);
-        }
     }
 
     private bool _isProperty(JsonObject desc, JsonNode? group)
     {
         // group 组有记录，一定不是属性
-        if (group != null)
-        {
-            return false;
-        }
+        if (group != null) return false;
 
         // 属性除 type 和 default 外，都是值而非对象
         foreach (var (key, node) in desc)
         {
-            if (key is "type" or "default")
-            {
-                continue;
-            }
+            if (key is "type" or "default") continue;
 
-            if (node is JsonObject)
-            {
-                return false;
-            }
+            if (node is JsonObject) return false;
         }
 
         return true;
@@ -69,7 +56,7 @@ public partial record ConfigFile
         defaultValue.Fix(type);
         // 是否隐藏
         var hidden = desc["hidden"]?.GetValue<bool>() ?? false;
-        
+
         parent.Properties.Add(new ConfigProperty(property, name, descStr, type, defaultValue, hidden, parent));
     }
 
@@ -99,7 +86,7 @@ public partial record ConfigFile
                 var gName = group["name"]?.GetValue<string>() ?? groupName;
                 // group 描述
                 var gDesc = group["desc"]?.GetValue<string>() ?? gName;
-                
+
                 g = new ConfigGroup(groupName, gName, gDesc, [], [], parent);
                 children = group["children"]?.AsObject();
                 break;
@@ -110,9 +97,6 @@ public partial record ConfigFile
         }
 
         parent.Groups.Add(g);
-        foreach (var (cName, cNode) in desc)
-        {
-            _addGroupOrProperty(cName, cNode!.AsObject(), children?[cName], g, types);
-        }
+        foreach (var (cName, cNode) in desc) _addGroupOrProperty(cName, cNode!.AsObject(), children?[cName], g, types);
     }
 }

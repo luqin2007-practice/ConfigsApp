@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using Configs.util;
+﻿using Configs.util;
+using System.Windows;
 
 namespace Configs.widget.property
 {

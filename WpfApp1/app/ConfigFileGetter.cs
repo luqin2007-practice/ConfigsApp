@@ -2,28 +2,26 @@
 
 namespace Configs.app;
 
-public partial record ConfigFile
+public partial class ConfigFile
 {
     public T GetProperty<T>(ConfigProperty property)
     {
         switch (Read())
         {
             case JsonNode json:
-                return getJsonValue<T>(property, json);
+                return _getJsonValue<T>(property, json);
         }
+
         return property.Default.GetValue<T>();
     }
-    
-    private T getJsonValue<T>(ConfigProperty property, JsonNode json)
+
+    private T _getJsonValue<T>(ConfigProperty property, JsonNode json)
     {
         var node = json;
-        foreach (var path in queryPath(property))
+        foreach (var path in _queryPath(property))
         {
             node = node[path];
-            if (node == null)
-            {
-                return property.Default.GetValue<T>();
-            }
+            if (node == null) return property.Default.GetValue<T>();
         }
 
         return node[property.Property] != null
